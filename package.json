@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.11.1"
+    "body-parser": "^1.10.2",
+    "express": "^4.11.1",
+    "lodash": "^3.0.0"
   }
 }
