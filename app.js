@@ -12,22 +12,29 @@ app.get('/*', function (req, res) {
 
 app.post('/notify', function (req, res) {
   var userId = req.body.user_id;
-  var data = req.body.data;
+  var message = req.body.message;
+  var payload = req.body.payload;
 
   if (!userId || _.isNaN(userId)) {
     res.status(406).send("Invalid or missing parameter: user_id");
     return;
   } 
 
-  if (!data || !isJsonString(data)) {
-    console.log(data);
+  if (!message || !isString(message)) {
+    res.status(406).send("Invalid or missing parameter: message");
+    return;
+  }
+
+  if (!payload || !isJsonString(payload)) {
+    console.log(payload);
     res.status(406).send("Invalid or missing parameter: data");
     return;
   }
 
   var queueRequest = {
     'user_id': userId,
-    'data': data
+    'message': message,
+    'payload': payload
   }
 
   // Probably need a filter here, but this is just a demo server
@@ -118,7 +125,7 @@ app.post('/unsubscribe', function (req, res) {
 
 var server = app.listen(3000, function () {
 
-  var host = server.address().address
+  var host = '10.0.1.22' //server.address().address
   var port = server.address().port
 
   console.log('Stentor demo HTTP server listening at http://%s:%s', host, port)
