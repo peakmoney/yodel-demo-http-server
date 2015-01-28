@@ -54,13 +54,14 @@ app.post('/subscribe', function (req, res) {
     return;
   } 
 
-  if (!token || !(token instanceof String)) {
+  if (!token || !isString(token)) {
     res.status(406).send("Invalid or missing parameter: token");
     return;
   }
 
-  if (!platform || !(platform instanceof String)) {
-    res.status(406).send("Invalid or missing parameter: token");
+  if (!platform || !isString(platform)) {
+    console.log(platform);
+    res.status(406).send("Invalid or missing parameter: platform");
     return;
   }
 
@@ -92,7 +93,7 @@ app.post('/unsubscribe', function (req, res) {
     return;
   } 
 
-  if (!token || !(token instanceof String)) {
+  if (!token || !isString(token)) {
     res.status(406).send("Invalid or missing parameter: token");
     return;
   }
@@ -102,8 +103,8 @@ app.post('/unsubscribe', function (req, res) {
     'token': token
   }
 
-  redis.lpush('stentor:subscribe', JSON.stringify(queueRequest), function(err, data) {
-    console.log('stentor:subscribe', data);
+  redis.lpush('stentor:unsubscribe', JSON.stringify(queueRequest), function(err, data) {
+    console.log('stentor:unsubscribe', data);
 
     if (err) {
       console.log(err);
@@ -132,4 +133,8 @@ function isJsonString(str) {
     return false;
   }
   return true;
+}
+
+function isString(obj) {
+  return typeof obj == 'string' || obj instanceof String;
 }
