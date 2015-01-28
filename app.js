@@ -38,8 +38,8 @@ app.post('/notify', function (req, res) {
   }
 
   // Probably need a filter here, but this is just a demo server
-  redis.lpush('stentor:notify', JSON.stringify(queueRequest), function(err, data) {
-    console.log('stentor:notify', data);
+  redis.lpush('yodel:notify', JSON.stringify(queueRequest), function(err, data) {
+    console.log('yodel:notify', data);
 
     if (err) {
       console.log(err);
@@ -78,8 +78,8 @@ app.post('/subscribe', function (req, res) {
     'platform': platform
   }
 
-  redis.lpush('stentor:subscribe', JSON.stringify(queueRequest), function(err, data) {
-    console.log('stentor:subscribe', data);
+  redis.lpush('yodel:subscribe', JSON.stringify(queueRequest), function(err, data) {
+    console.log('yodel:subscribe', data);
 
     if (err) {
       console.log(err);
@@ -110,8 +110,8 @@ app.post('/unsubscribe', function (req, res) {
     'token': token
   }
 
-  redis.lpush('stentor:unsubscribe', JSON.stringify(queueRequest), function(err, data) {
-    console.log('stentor:unsubscribe', data);
+  redis.lpush('yodel:unsubscribe', JSON.stringify(queueRequest), function(err, data) {
+    console.log('yodel:unsubscribe', data);
 
     if (err) {
       console.log(err);
@@ -128,7 +128,7 @@ var server = app.listen(3000, function () {
   var host = '10.0.1.22' //server.address().address
   var port = server.address().port
 
-  console.log('Stentor demo HTTP server listening at http://%s:%s', host, port)
+  console.log('Yodel demo HTTP server listening at http://%s:%s', host, port)
 
 })
 
