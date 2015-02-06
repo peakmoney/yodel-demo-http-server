@@ -25,9 +25,9 @@ app.post('/notify', function (req, res) {
     return;
   }
 
-  if (!payload || !isJsonString(payload)) {
+  if (!payload) {
     console.log(payload);
-    res.status(406).send("Invalid or missing parameter: data");
+    res.status(406).send("Invalid or missing parameter: payload");
     return;
   }
 
@@ -76,7 +76,7 @@ app.post('/subscribe', function (req, res) {
     'user_id': userId,
     'token': token,
     'platform': platform
-  }
+  };
 
   redis.lpush('yodel:subscribe', JSON.stringify(queueRequest), function(err, data) {
     console.log('yodel:subscribe', data);
@@ -94,6 +94,7 @@ app.post('/subscribe', function (req, res) {
 app.post('/unsubscribe', function (req, res) {
   var userId = req.body.user_id;
   var token = req.body.token;
+  var platform = req.body.platform || 'android';
 
   if (!userId || _.isNaN(userId)) {
     res.status(406).send("Invalid or missing parameter: user_id");
@@ -105,10 +106,17 @@ app.post('/unsubscribe', function (req, res) {
     return;
   }
 
+  if (!platform || !isString(platform)) {
+    console.log(platform);
+    res.status(406).send("Invalid or missing parameter: platform");
+    return;
+  }
+
   var queueRequest = {
     'user_id': userId,
-    'token': token
-  }
+    'token': token,
+    'platform': platform
+  };
 
   redis.lpush('yodel:unsubscribe', JSON.stringify(queueRequest), function(err, data) {
     console.log('yodel:unsubscribe', data);
