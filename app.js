@@ -34,7 +34,8 @@ app.post('/notify', function (req, res) {
   var queueRequest = {
     'user_id': userId,
     'message': message,
-    'payload': payload
+    'payload': payload,
+    'include_notification_key': false
   }
 
   // Probably need a filter here, but this is just a demo server
@@ -75,7 +76,8 @@ app.post('/subscribe', function (req, res) {
   var queueRequest = {
     'user_id': userId,
     'token': token,
-    'platform': platform
+    'platform': platform,
+    'send_notification_key': true
   };
 
   redis.lpush('yodel:subscribe', JSON.stringify(queueRequest), function(err, data) {
